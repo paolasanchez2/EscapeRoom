@@ -16,25 +16,47 @@ namespace EscapeRoom
 
         List<Acertijo> bancoDeAcertijos = new List<Acertijo>();
         Random azar = new Random();
-        int indiceActual = 0; // Para saber qué pregunta mostrar
-        int intentosRestantes = 3; // El jugador tiene 3 vidas
-        public Form1()
-        {
-            InitializeComponent();
-            InicializarJuego();
-            pictureBox1.Visible = false;
-            pictureBox2.Visible = false;
-            pictureBox3.Visible = false;
+        Random rnd = new Random();
+        int indiceActual = 0;
+        int intentosRestantes = 3;
+        int tiempoRestante = 30;
+        int contadorMovimiento = 0;
+        int puntuacionTotal = 0;
+        int asedioIntensidad = 5;
+        Acertijo nivel;
+        Ajustes ajustes;
 
-            button1.Visible = false;
-            button2.Visible = false;    
-            button3.Visible = false;
-            button4.Visible = false;
+      
+            public Form1()
+            {
+                InitializeComponent();
 
-            lblPregunta.Visible = false;
-            this.DoubleBuffered = true; 
+                // Cargar ajustes guardados (idioma)
+                ajustes = Ajustes.Cargar();
+                Textos.IdiomaActivo = ajustes.Idioma;
 
-        }
+                InicializarJuego();
+
+                pictureBox1.Visible = false;
+                pictureBox2.Visible = false;
+                pictureBox3.Visible = false;
+                button1.Visible = false;
+                button2.Visible = false;
+                button3.Visible = false;
+                button4.Visible = false;
+                lblPregunta.Visible = false;
+
+                this.DoubleBuffered = true;
+
+                AgregarBotonesExtra();
+                AplicarIdioma();
+
+                // Teclado sin mouse
+                KeyPreview = true;
+                KeyDown += Form1_KeyDown;
+            }
+
+
 
         // Agrega esto donde están tus otras variables (como puntuacionTotal)
         string[] imagenesEscenarios = {
@@ -44,7 +66,9 @@ namespace EscapeRoom
     "C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\nivel3.png",
     "C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\nivel4.png",
 };
-
+        Button btnAjustes;
+        Button btnCargar;
+        Button btnGuardarPartida;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -61,82 +85,216 @@ namespace EscapeRoom
         {
             try
             {
-                // 1. Obtenemos la ruta automática al escritorio del usuario actual
                 string escritorio = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-
-                // 2. Creamos un nombre único con la fecha y hora (AñoMesDia_HoraMinutoSegundo)
-                string nombreArchivo = "Resultado_Escape_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".txt";
-
-                // 3. Combinamos la ruta del escritorio con el nombre del archivo
+                string nombreArchivo = "Resultado_Escape_" + DateTime.Now.ToString("yyyyMMdd_HHmmss") + ".json";
                 string rutaCompleta = Path.Combine(escritorio, nombreArchivo);
 
-                // 4. Preparamos el contenido
-                string contenido = "--- REPORTE DE LABORATORIO: ESCAPE ROOM ---\n";
-                contenido += $"Fecha de la misión: {DateTime.Now.ToString()}\n";
-                contenido += $"Puntuación lograda: {puntuacionTotal} puntos\n";
-                contenido += $"Intentos restantes: {intentosRestantes}\n";
-                contenido += "-------------------------------------------\n";
-                contenido += "Estado: Misión Cumplida.";
+                // Construimos el JSON a mano (compatible con .NET Framework / C# 7)
+                string json = "{\n";
+                json += "  \"Titulo\": \"" + Textos.Get("reporteTitulo") + "\",\n";
+                json += "  \"Fecha\": \"" + DateTime.Now.ToString() + "\",\n";
+                json += "  \"Puntuacion\": " + puntuacionTotal + ",\n";
+                json += "  \"IntentosRestantes\": " + intentosRestantes + ",\n";
+                json += "  \"Estado\": \"" + Textos.Get("reporteEstado") + "\",\n";
+                json += "  \"Idioma\": \"" + Textos.IdiomaActivo + "\"\n";
+                json += "}";
 
-                // 5. Escribimos el archivo físicamente en el escritorio
-                File.WriteAllText(rutaCompleta, contenido);
-
-                MessageBox.Show($"¡Datos exportados al escritorio!\nArchivo: {nombreArchivo}", "Éxito");
+                File.WriteAllText(rutaCompleta, json);
+                MessageBox.Show(Textos.Get("msgExportOk", nombreArchivo),
+                                Textos.Get("msgExportTitulo"));
             }
             catch (Exception ex)
             {
-                MessageBox.Show("No se pudo guardar en el escritorio: " + ex.Message);
+                MessageBox.Show(Textos.Get("msgExportError", ex.Message));
             }
         }
+        private void AgregarBotonesExtra()
+        {
+            // ⚙ Ajustes — esquina superior derecha
+            btnAjustes = new Button
+            {
+                Text = Textos.Get("btnAjustes"),
+                Width = 110,
+                Height = 32,
+                Left = this.ClientSize.Width - 120,
+                Top = 10,
+                BackColor = Color.FromArgb(0, 80, 100),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                TabIndex = 10
+            };
+            btnAjustes.Click += BtnAjustes_Click;
 
+            // 📂 Cargar partida
+            btnCargar = new Button
+            {
+                Text = Textos.Get("btnCargar"),
+                Width = 130,
+                Height = 32,
+                Left = this.ClientSize.Width - 240,
+                Top = 10,
+                BackColor = Color.FromArgb(80, 50, 0),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                TabIndex = 11
+            };
+            btnCargar.Click += BtnCargar_Click;
+
+            // 💾 Guardar partida (visible sólo mientras se juega)
+            btnGuardarPartida = new Button
+            {
+                Text = "💾 " + Textos.Get("tituloGuardar"),
+                Width = 120,
+                Height = 32,
+                Left = this.ClientSize.Width - 120,
+                Top = 40,
+                BackColor = Color.FromArgb(0, 70, 0),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Anchor = AnchorStyles.Top | AnchorStyles.Right,
+                Visible = false,
+                TabIndex = 12
+            };
+            btnGuardarPartida.Click += BtnGuardarPartida_Click;
+
+            Controls.AddRange(new Control[] { btnAjustes, btnCargar, btnGuardarPartida });
+        }
         private void MostrarSiguientePregunta()
         {
             if (indiceActual < bancoDeAcertijos.Count)
             {
                 nivel = bancoDeAcertijos[indiceActual];
-                // --- RESET DEL MONSTRUO ---
+
+                // Reset posición del monstruo
                 pictureBox3.Left = this.Width - pictureBox3.Width - 20;
-                pictureBox3.Top = 100; // Altura media para que no tape los botones
+                pictureBox3.Top = 100;
                 pictureBox3.Visible = true;
 
                 lblPregunta.Text = nivel.Pregunta;
+
                 if (indiceActual < imagenesEscenarios.Length)
                 {
                     pictureBox2.Image = Image.FromFile(imagenesEscenarios[indiceActual]);
                     pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
                 }
-                // CORRECCIÓN AQUÍ: Agregamos los índices [ ]
+
                 button1.Text = nivel.Opciones[0];
                 button2.Text = nivel.Opciones[1];
                 button3.Text = nivel.Opciones[2];
                 button4.Text = nivel.Opciones[3];
 
-
                 tiempoRestante = 30;
-                lblTiempo.Text = "Tiempo: 30s";
+                lblTiempo.Text = Textos.Get("lblTiempoFmt", tiempoRestante);
                 timer1.Start();
             }
             else
             {
                 timer1.Stop();
-                MessageBox.Show($"¡Felicidades! Has completado todos los acertijos.\nPuntuación final: {puntuacionTotal}", "Juego Terminado");
-                ExportarPuntuacion(); // <--- Llamamos a la función del TXT aquí
+                MessageBox.Show(Textos.Get("msgFin", puntuacionTotal),
+                                Textos.Get("msgFinTitulo"));
+                ExportarPuntuacion();
                 this.Close();
             }
         }
 
-        Acertijo nivel;
-        int tiempoRestante = 30; // 30 segundos para responder
-        int contadorMovimiento = 0; // Para contar los 3 segundos
-        Random rnd = new Random();
-        int puntuacionTotal = 0;
+        private void AplicarIdioma()
+        {
+            btnIniciar.Text = Textos.Get("btnIniciar");
+            btnPista.Text = Textos.Get("btnPista");
+            lblPuntuacion.Text = Textos.Get("lblPuntuacion");
+            lblTiempo.Text = Textos.Get("lblTiempo");
+
+            if (btnAjustes != null) btnAjustes.Text = Textos.Get("btnAjustes");
+            if (btnCargar != null) btnCargar.Text = Textos.Get("btnCargar");
+            if (btnGuardarPartida != null) btnGuardarPartida.Text = "💾 " + Textos.Get("tituloGuardar");
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (nivel == null) return;
+
+            switch (e.KeyCode)
+            {
+                case Keys.D1: case Keys.NumPad1: button1.PerformClick(); break;
+                case Keys.D2: case Keys.NumPad2: button2.PerformClick(); break;
+                case Keys.D3: case Keys.NumPad3: button3.PerformClick(); break;
+                case Keys.D4: case Keys.NumPad4: button4.PerformClick(); break;
+                case Keys.P: btnPista.PerformClick(); break;
+                case Keys.S: btnGuardarPartida.PerformClick(); break;
+                case Keys.L: btnCargar.PerformClick(); break;
+                case Keys.C: btnAjustes.PerformClick(); break;
+
+            }
+            e.Handled = true;
+        }
+
+        private void BtnAjustes_Click(object sender, EventArgs e)
+        {
+            timer1.Stop();
+            var form = new FormAjustes(ajustes);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                ajustes = Ajustes.Cargar();
+                Textos.IdiomaActivo = ajustes.Idioma;
+                AplicarIdioma();
+            }
+            if (nivel != null) timer1.Start();
+        }
+
+        private void BtnCargar_Click(object sender, EventArgs e)
+        {
+            timer1.Stop();
+            var form = new FormPartidas(FormPartidas.Modo.Cargar);
+            if (form.ShowDialog() == DialogResult.OK && form.PartidaCargada != null)
+            {
+                var p = form.PartidaCargada;
+                indiceActual = p.IndiceNivel;
+                puntuacionTotal = p.Puntuacion;
+                intentosRestantes = p.IntentosRestantes;
+
+                // Mostrar controles de juego
+                pictureBox1.Visible = true;
+                pictureBox2.Visible = true;
+                button1.Visible = button2.Visible = button3.Visible = button4.Visible = true;
+                lblPregunta.Visible = true;
+                btnGuardarPartida.Visible = true;
+                btnIniciar.Visible = false;
+
+                lblPuntuacion.Text = Textos.Get("puntuacionFmt", puntuacionTotal);
+
+                // Cargar imagen del científico y monstruo
+                pictureBox1.Image = Image.FromFile("C:\\Users\\junio\\source\\repos\\EscapeRoom\\EscapeRoom\\imagenes\\cientifico2.png");
+                pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+                pictureBox3.Image = Image.FromFile("C:\\Users\\junio\\source\\repos\\EscapeRoom\\EscapeRoom\\imagenes\\mounstro3.png");
+                pictureBox3.SizeMode = PictureBoxSizeMode.StretchImage;
+
+                MostrarSiguientePregunta();
+            }
+            else if (nivel != null) timer1.Start();
+        }
+
+        private void BtnGuardarPartida_Click(object sender, EventArgs e)
+        {
+            timer1.Stop();
+            var estado = new Partida
+            {
+                IndiceNivel = indiceActual,
+                Puntuacion = puntuacionTotal,
+                IntentosRestantes = intentosRestantes
+            };
+            var form = new FormPartidas(FormPartidas.Modo.Guardar, estado);
+            form.ShowDialog();
+            if (nivel != null) timer1.Start();
+        }
 
         private void btnIniciar_Click(object sender, EventArgs e)
         {
 
             pictureBox1.Visible = true;
             pictureBox1.Image = Image.FromFile("C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\cientifico2.png");
-        pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
 
           pictureBox2.Visible = true;
             pictureBox2.Image = Image.FromFile("C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\puerta.jpg");
@@ -154,7 +312,7 @@ namespace EscapeRoom
 
             lblPregunta.Text = nivel.Pregunta;
           
-
+            label1.Visible = false;
             button1.Visible = true;
             button2.Visible = true;
             button3.Visible = true;
@@ -165,6 +323,7 @@ namespace EscapeRoom
             MostrarSiguientePregunta();
 
             btnIniciar.Visible = false; // Esconde el botón de inicio para que no se pueda presionar de nuevo
+            btnGuardarPartida.Visible = true;  
 
             tiempoRestante = 30; // Resetear tiempo
             contadorMovimiento = 0;
@@ -197,204 +356,56 @@ namespace EscapeRoom
 
         private void button4_Click(object sender, EventArgs e)
         {
-            // 1. Verificamos con el método de tu clase
-            if (nivel.VerificarRespuesta(button4.Text))
-            {
-                // --- LÓGICA DE VICTORIA ---
-                timer1.Stop(); // Detenemos al monstruo de inmediato
-                puntuacionTotal += tiempoRestante;
-
-                // Actualizamos el Label de puntuación
-                lblPuntuacion.Text = "Puntuación: " + puntuacionTotal.ToString();
-                // Efecto visual: El monstruo desaparece y la puerta cambia
-                pictureBox3.Visible = false;
-                
-                MessageBox.Show("¡EXCELENTE! El código era correcto.",
-                                "Nivel Completado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                indiceActual++; // Pasamos a la siguiente pregunta
-              
-                MostrarSiguientePregunta(); // Cargamos los nuevos datos
-               pictureBox1.Visible = false; 
-             
-            }
-            else
-            {
-                intentosRestantes--;
-                if (intentosRestantes > 0)
-                {
-                    MessageBox.Show($"¡Incorrecto! Te quedan {intentosRestantes} intentos. El monstruo se acerca...");
-                }
-                else
-                {
-                    timer1.Stop();
-                    MessageBox.Show("Has agotado tus intentos. El laboratorio se ha cerrado permanentemente.", "Game Over");
-                    this.Close();
-                }
-            }
+            ProcesarRespuesta(button4.Text);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            // 1. Verificamos con el método de tu clase
-            if (nivel.VerificarRespuesta(button1.Text))
-            {
-                // --- LÓGICA DE VICTORIA ---
-                timer1.Stop(); // Detenemos al monstruo de inmediato
-                puntuacionTotal += tiempoRestante;
-
-                // Actualizamos el Label de puntuación
-                lblPuntuacion.Text = "Puntuación: " + puntuacionTotal.ToString();
-                // Efecto visual: El monstruo desaparece y la puerta cambia
-                pictureBox3.Visible = false;
-
-                MessageBox.Show("¡EXCELENTE! El código era correcto. ¡Has escapado del laboratorio!",
-                                "Nivel Completado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                indiceActual++; // Pasamos a la siguiente pregunta
-                MostrarSiguientePregunta(); // Cargamos los nuevos datos
-                pictureBox1.Visible = false;
-
-              
-            }
-            else
-            {
-                intentosRestantes--;
-                if (intentosRestantes > 0)
-                {
-                    MessageBox.Show($"¡Incorrecto! Te quedan {intentosRestantes} intentos. El monstruo se acerca...");
-                }
-                else
-                {
-                    timer1.Stop();
-                    MessageBox.Show("Has agotado tus intentos. El laboratorio se ha cerrado permanentemente.", "Game Over");
-                    this.Close();
-                }
-            }
+            ProcesarRespuesta(button1.Text);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            // 1. Verificamos con el método de tu clase
-            if (nivel.VerificarRespuesta(button2.Text))
-            {
-                // --- LÓGICA DE VICTORIA ---
-                timer1.Stop(); // Detenemos al monstruo de inmediato
-                puntuacionTotal += tiempoRestante;
-
-                // Actualizamos el Label de puntuación
-                lblPuntuacion.Text = "Puntuación: " + puntuacionTotal.ToString();
-                // Efecto visual: El monstruo desaparece y la puerta cambia
-                pictureBox3.Visible = false;
-
-                MessageBox.Show("¡EXCELENTE! El código era correcto. ¡Has escapado del laboratorio!",
-                                "Nivel Completado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                indiceActual++; // Pasamos a la siguiente pregunta
-                MostrarSiguientePregunta(); // Cargamos los nuevos datos
-                pictureBox1.Visible = false;
-
-            }
-            else
-            {
-                intentosRestantes--;
-                if (intentosRestantes > 0)
-                {
-                    MessageBox.Show($"¡Incorrecto! Te quedan {intentosRestantes} intentos. El monstruo se acerca...");
-                }
-                else
-                {
-                    timer1.Stop();
-                    MessageBox.Show("Has agotado tus intentos. El laboratorio se ha cerrado permanentemente.", "Game Over");
-                    this.Close();
-                }
-
-            }
+            ProcesarRespuesta(button2.Text);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            // 1. Verificamos con el método de tu clase
-            if (nivel.VerificarRespuesta(button3.Text))
-            {
-                // --- LÓGICA DE VICTORIA ---
-                timer1.Stop(); // Detenemos al monstruo de inmediato
-                puntuacionTotal += tiempoRestante;
-
-                // Actualizamos el Label de puntuación
-                lblPuntuacion.Text = "Puntuación: " + puntuacionTotal.ToString();
-                // Efecto visual: El monstruo desaparece y la puerta cambia
-                pictureBox3.Visible = false;
-
-                MessageBox.Show("¡EXCELENTE! El código era correcto. ¡Has escapado del laboratorio!",
-                                "Nivel Completado", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                indiceActual++; // Pasamos a la siguiente pregunta
-                MostrarSiguientePregunta(); // Cargamos los nuevos datos
-                pictureBox1.Visible = false;
-
-                
-            }
-            else
-            {
-                intentosRestantes--;
-                if (intentosRestantes > 0)
-                {
-                    MessageBox.Show($"¡Incorrecto! Te quedan {intentosRestantes} intentos. El monstruo se acerca...");
-                }
-                else
-                {
-                    timer1.Stop();
-                    MessageBox.Show("Has agotado tus intentos. El laboratorio se ha cerrado permanentemente.", "Game Over");
-                    this.Close();
-                }
-            }
+            ProcesarRespuesta(button3.Text);
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
 
         }
-        int asedioIntensidad = 5; // Qué tan "brinco" se mueve el monstruo
         private void timer1_Tick(object sender, EventArgs e)
         {
-            // --- 1. Lógica del Tiempo Límite (Cada 1 segundo) ---
-            // (Asegúrate que el Interval de tu Timer sea 1000ms para que esto baje bien)
             tiempoRestante--;
-            lblTiempo.Text = "Tiempo: " + tiempoRestante + "s";
+            lblTiempo.Text = Textos.Get("lblTiempoFmt", tiempoRestante);
 
             if (tiempoRestante <= 0)
             {
                 timer1.Stop();
-                MessageBox.Show("¡EL MONSTRUO TE ATRAPÓ! No lograste abrir la puerta a tiempo.");
-                this.Close(); // O reiniciar el juego
+                MessageBox.Show(Textos.Get("msgTiempo"));
+                this.Close();
+                return;
             }
 
-            // --- 2. Lógica de Asedio (Movimiento del Monstruo) ---
-            // (Asegúrate de que el DoubleBuffered = true; esté en tu constructor para no tener el rastro)
-
-            // Calculamos hacia dónde debe moverse el monstruo (pictureBox3)
-            int targetX = pictureBox2.Left; // La puerta (donde está el científico)
+            int targetX = pictureBox2.Left;
             int targetY = pictureBox2.Top;
-
-            // Movimiento base del monstruo (asedio constante)
             int velocidadBase = 2;
-
-            // Calculamos la dirección y le añadimos un "efecto de temblor" al azar
             int temblorX = rnd.Next(-asedioIntensidad, asedioIntensidad);
             int temblorY = rnd.Next(-asedioIntensidad, asedioIntensidad);
 
-            // Movimiento en X
             if (pictureBox3.Left < targetX) pictureBox3.Left += (velocidadBase + temblorX);
             if (pictureBox3.Left > targetX) pictureBox3.Left -= (velocidadBase + temblorX);
-
-            // Movimiento en Y
             if (pictureBox3.Top < targetY) pictureBox3.Top += (velocidadBase + temblorY);
             if (pictureBox3.Top > targetY) pictureBox3.Top -= (velocidadBase + temblorY);
 
-
-            // --- 3. Condición de Derrota (Si el monstruo "toca" la puerta/científico) ---
-            // Usamos IntersectsWith para detectar la colisión
             if (pictureBox3.Bounds.IntersectsWith(pictureBox2.Bounds))
             {
                 timer1.Stop();
-                MessageBox.Show("¡EL MONSTRUO FORZÓ LA PUERTA! El científico fue atrapado.");
+                MessageBox.Show(Textos.Get("msgColision"));
                 this.Close();
             }
         }
@@ -408,7 +419,7 @@ namespace EscapeRoom
 
                 //  quitarle 5 segundos al tiempo restante como "pago".
                 tiempoRestante -= 5;
-                lblTiempo.Text = "Tiempo: " + tiempoRestante + "s";
+                lblTiempo.Text = Textos.Get("lblTiempoFmt", tiempoRestante);
             }
         }
 
@@ -431,6 +442,45 @@ namespace EscapeRoom
             // Pregunta 5: Clase Hija (Tu pregunta original)
             string[] ops5 = { "botella", "tubo de ensayo", "vaso", "florero" };
             bancoDeAcertijos.Add(new AcertijoLaboratorio("Soy de cristal y guardo muestras pequeñas", "tubo de ensayo", "Recipiente delgado", ops5, "Vidrio"));
+        }
+
+        private void ProcesarRespuesta(string respuesta)
+        {
+            if (nivel.VerificarRespuesta(respuesta))
+            {
+                timer1.Stop();
+                puntuacionTotal += tiempoRestante;
+                lblPuntuacion.Text = Textos.Get("puntuacionFmt", puntuacionTotal);
+                pictureBox3.Visible = false;
+
+                MessageBox.Show(Textos.Get("msgCorrecto"),
+                                Textos.Get("msgNivelOk"),
+                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                indiceActual++;
+                MostrarSiguientePregunta();
+                pictureBox1.Visible = false;
+            }
+            else
+            {
+                intentosRestantes--;
+                if (intentosRestantes > 0)
+                {
+                    MessageBox.Show(Textos.Get("msgIncorrecto", intentosRestantes));
+                }
+                else
+                {
+                    timer1.Stop();
+                    MessageBox.Show(Textos.Get("msgSinIntentos"), Textos.Get("msgGameOver"));
+                    this.Close();
+                }
+            }
+        }
+
+
+        private void lblTiempo_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
