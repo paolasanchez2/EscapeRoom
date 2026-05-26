@@ -57,7 +57,7 @@ namespace EscapeRoom
             }
 
 
-
+         
         // Agrega esto donde están tus otras variables (como puntuacionTotal)
         string[] imagenesEscenarios = {
     "C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\puertaabierta.png",
