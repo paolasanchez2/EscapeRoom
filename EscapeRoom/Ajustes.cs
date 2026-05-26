@@ -28,7 +28,7 @@ namespace EscapeRoom
             if (!File.Exists(RutaConfig))
                 return new Ajustes();
 
-            try
+            try 
             {
                 string json = File.ReadAllText(RutaConfig);
                 return JsonSerializer.Deserialize<Ajustes>(json) ?? new Ajustes();

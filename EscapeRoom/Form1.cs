@@ -56,7 +56,7 @@ namespace EscapeRoom
                 KeyDown += Form1_KeyDown;
             }
 
-
+          
          
         // Agrega esto donde están tus otras variables (como puntuacionTotal)
         string[] imagenesEscenarios = {

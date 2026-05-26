@@ -33,7 +33,7 @@ namespace EscapeRoom
             { "msgColision",     new Dictionary<string,string> { {"es","¡EL MONSTRUO FORZÓ LA PUERTA! El científico fue atrapado."},
                                                                   {"en","THE MONSTER BROKE THROUGH! The scientist was caught."} } },
             { "msgFin",          new Dictionary<string,string> { {"es","¡Felicidades! Completaste todos los acertijos.\nPuntuación final: {0}"},
-                                                                  {"en","Congratulations! All riddles solved.\nFinal score: {0}"} } },
+                                                                   {"en","Congratulations! All riddles solved.\nFinal score: {0}"} } },
             { "msgFinTitulo",    new Dictionary<string,string> { {"es","Juego Terminado"},   {"en","Game Over"} } },
             { "msgExportOk",     new Dictionary<string,string> { {"es","¡Datos exportados!\nArchivo: {0}"}, {"en","Data exported!\nFile: {0}"} } },
             { "msgExportTitulo", new Dictionary<string,string> { {"es","Éxito"},             {"en","Success"} } },

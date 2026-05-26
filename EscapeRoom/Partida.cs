@@ -35,7 +35,7 @@ namespace EscapeRoom
 
         // ── Cargar ranura ────────────────────────────────────────────────────
         public static Partida Cargar(int ranura)
-        {
+        { 
             string ruta = RutaRanura(ranura);
             if (!File.Exists(ruta)) return new Partida();          // ranura vacía
 
