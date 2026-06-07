@@ -31,8 +31,8 @@ namespace EscapeRoom
             {
                 InitializeComponent();
 
-                // Cargar ajustes guardados (idioma)
-                ajustes = Ajustes.Cargar();
+            // Carga ajustes guardados y aplica idioma
+            ajustes = Ajustes.Cargar();
                 Textos.IdiomaActivo = ajustes.Idioma;
 
                 InicializarJuego();
@@ -60,11 +60,18 @@ namespace EscapeRoom
          
         // Agrega esto donde están tus otras variables (como puntuacionTotal)
         string[] imagenesEscenarios = {
-    "C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\puertaabierta.png",
-    "C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\nivel1.png",
-    "C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\nivel2.png",
-    "C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\nivel3.png",
-    "C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\nivel4.png",
+    "C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\puerta.jpg",
+    "C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\nivel 22.png",
+    "C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\nivel333.png",
+    "C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\nivel44.png",
+    "C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\nivel55.png",
+    "C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\nivel66.png",
+    "C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\nivel77.png",
+    "C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\nivel88.png",
+    "C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\nivel99.png",
+    "C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\nivel1000.png",
+    "C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\nivel122.png",
+
 };
         Button btnAjustes;
         Button btnCargar;
@@ -74,10 +81,11 @@ namespace EscapeRoom
         {
            this.BackgroundImageLayout = ImageLayout.Stretch;
            pictureBox1.BackColor = Color.Transparent; //  fondo del control transparente 
-           pictureBox1.Parent = this; // Le dice que su "fondo" es el Formulario
+           pictureBox1.Parent = this; 
 
             pictureBox3.BackColor = Color.Transparent; //  fondo del control transparente 
-            pictureBox3.Parent = this; // Le dice que su "fondo" es el Formulario
+            pictureBox3.Parent = this; 
+
 
         }
 
@@ -108,66 +116,78 @@ namespace EscapeRoom
                 MessageBox.Show(Textos.Get("msgExportError", ex.Message));
             }
         }
+
+
         private void AgregarBotonesExtra()
         {
-            // ⚙ Ajustes — esquina superior derecha
+            // --- Ajustes --- 
             btnAjustes = new Button
             {
                 Text = Textos.Get("btnAjustes"),
-                Width = 110,
-                Height = 32,
-                Left = this.ClientSize.Width - 120,
+                Width = 90,
+                Height = 24,
+                Left = this.ClientSize.Width - 100,
                 Top = 10,
-                BackColor = Color.FromArgb(0, 80, 100),
-                ForeColor = Color.White,
+                BackColor = Color.BlueViolet,                    // Fondo BlueViolet eléctrico
+                ForeColor = Color.White,                         // Letras blancas para que resalten
                 FlatStyle = FlatStyle.Flat,
                 Anchor = AnchorStyles.Top | AnchorStyles.Right,
                 TabIndex = 10
             };
+            btnAjustes.FlatAppearance.BorderSize = 0;           // Sin orilla blanca
+            btnAjustes.FlatAppearance.MouseOverBackColor = Color.MediumPurple; // Se aclara al pasar el mouse
             btnAjustes.Click += BtnAjustes_Click;
 
-            // 📂 Cargar partida
+            // --- Cargar partida ---
             btnCargar = new Button
             {
                 Text = Textos.Get("btnCargar"),
-                Width = 130,
-                Height = 32,
-                Left = this.ClientSize.Width - 240,
+                Width = 100,
+                Height = 24,
+                Left = this.ClientSize.Width - 210,
                 Top = 10,
-                BackColor = Color.FromArgb(80, 50, 0),
+                BackColor = Color.BlueViolet,                    // Fondo BlueViolet
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
                 Anchor = AnchorStyles.Top | AnchorStyles.Right,
                 TabIndex = 11
             };
+            btnCargar.FlatAppearance.BorderSize = 0;
+            btnCargar.FlatAppearance.MouseOverBackColor = Color.MediumPurple;
             btnCargar.Click += BtnCargar_Click;
 
-            // 💾 Guardar partida (visible sólo mientras se juega)
+            // --- Guardar partida --- 
             btnGuardarPartida = new Button
             {
                 Text = "💾 " + Textos.Get("tituloGuardar"),
-                Width = 120,
-                Height = 32,
+                Width = 110,
+                Height = 24,
                 Left = this.ClientSize.Width - 120,
-                Top = 40,
-                BackColor = Color.FromArgb(0, 70, 0),
+                Top = 38,
+                BackColor = Color.BlueViolet,                    // Fondo BlueViolet
                 ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
                 Anchor = AnchorStyles.Top | AnchorStyles.Right,
                 Visible = false,
                 TabIndex = 12
             };
+            btnGuardarPartida.FlatAppearance.BorderSize = 0;
+            btnGuardarPartida.FlatAppearance.MouseOverBackColor = Color.MediumPurple;
             btnGuardarPartida.Click += BtnGuardarPartida_Click;
 
+            // Agregar los botones al formulario
             Controls.AddRange(new Control[] { btnAjustes, btnCargar, btnGuardarPartida });
+        
         }
+        
+
         private void MostrarSiguientePregunta()
         {
             if (indiceActual < bancoDeAcertijos.Count)
             {
                 nivel = bancoDeAcertijos[indiceActual];
 
-                // Reset posición del monstruo
+                // posición del monstruo
                 pictureBox3.Left = this.Width - pictureBox3.Width - 20;
                 pictureBox3.Top = 100;
                 pictureBox3.Visible = true;
@@ -205,6 +225,7 @@ namespace EscapeRoom
             btnPista.Text = Textos.Get("btnPista");
             lblPuntuacion.Text = Textos.Get("lblPuntuacion");
             lblTiempo.Text = Textos.Get("lblTiempo");
+            lblPregunta.Text = Textos.Get("lblPregunta");
 
             if (btnAjustes != null) btnAjustes.Text = Textos.Get("btnAjustes");
             if (btnCargar != null) btnCargar.Text = Textos.Get("btnCargar");
@@ -238,6 +259,20 @@ namespace EscapeRoom
             {
                 ajustes = Ajustes.Cargar();
                 Textos.IdiomaActivo = ajustes.Idioma;
+
+               
+                InicializarJuego(); //  la lista de preguntas con el nuevo idioma
+                if (nivel != null)
+                {
+                    // Actualiza botones y pregunta con el nuevo idioma
+                    nivel = bancoDeAcertijos[indiceActual];
+                    lblPregunta.Text = nivel.Pregunta;
+                    button1.Text = nivel.Opciones[0];
+                    button2.Text = nivel.Opciones[1];
+                    button3.Text = nivel.Opciones[2];
+                    button4.Text = nivel.Opciones[3];
+                }
+
                 AplicarIdioma();
             }
             if (nivel != null) timer1.Start();
@@ -290,9 +325,10 @@ namespace EscapeRoom
         }
 
         private void btnIniciar_Click(object sender, EventArgs e)
+        
         {
 
-            pictureBox1.Visible = true;
+        pictureBox1.Visible = true;
             pictureBox1.Image = Image.FromFile("C:\\Proyecto2026 csharp\\EscapeRoom\\EscapeRoom\\imagenes\\cientifico2.png");
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
 
@@ -322,13 +358,13 @@ namespace EscapeRoom
             indiceActual = 0; // Empezamos desde la primera
             MostrarSiguientePregunta();
 
-            btnIniciar.Visible = false; // Esconde el botón de inicio para que no se pueda presionar de nuevo
+            btnIniciar.Visible = false; //nos esconde el boton de inicio
             btnGuardarPartida.Visible = true;  
 
-            tiempoRestante = 30; // Resetear tiempo
+            tiempoRestante = 30; 
             contadorMovimiento = 0;
             lblTiempo.Text = "Tiempo: 30s";
-            timer1.Start(); // ¡Aquí empieza la acción!
+            timer1.Start();
 
         }
 
@@ -414,10 +450,9 @@ namespace EscapeRoom
         {
             if (nivel != null)
             {
-                // Usamos el método que ya programaste en tu clase
                 nivel.MostrarPista();
 
-                //  quitarle 5 segundos al tiempo restante como "pago".
+                // se resta tiempo  por usar la pista
                 tiempoRestante -= 5;
                 lblTiempo.Text = Textos.Get("lblTiempoFmt", tiempoRestante);
             }
@@ -425,25 +460,94 @@ namespace EscapeRoom
 
         void InicializarJuego()
         {
-            // Mezcla de Acertijos normales y de Laboratorio (Herencia/Polimorfismo)
+            // aqui es para cambiar el idioma de los acertijos, se vacia la lista y se vuelven a cargar con el idioma correcto
+            bancoDeAcertijos.Clear();
 
-            // Pregunta 1: Clase Base
-            bancoDeAcertijos.Add(new Acertijo("Soy un gas noble que hace flotar globos", "Helio", "Elemento ligero", new string[] { "Oxigeno", "Helio", "Nitrogeno", "Neon" }));
+            if (Textos.IdiomaActivo == "en")
+            {
+                // --- LEVEL 1: ENTRANCE (Base Class) ---
+                string[] ops1 = { "3.14", "2.15", "1.16", "4.20" };
+                bancoDeAcertijos.Add(new Acertijo("The monster is coming! Enter the emergency PIN (the first digits of PI) to access.", "3.14", "It is the mathematical constant used to calculate circles.", ops1));
 
-            // Pregunta 2: Clase Hija
-            bancoDeAcertijos.Add(new AcertijoLaboratorio("Instrumento para medir la masa de sustancias", "Balanza", "No es una báscula de baño", new string[] { "Regla", "Probeta", "Balanza", "Termometro" }, "Metal"));
+                // --- LEVEL 2: THE PANEL (Derived Class) ---
+                string[] ops2 = { "Glass", "Copper", "Plastic", "Paper" };
+                bancoDeAcertijos.Add(new AcertijoLaboratorio("Access granted! The scientist entered, but the power went out due to a short circuit in the control board. Which conductive metal will you reconnect?", "Copper", "A reddish transition metal with high electrical conductivity.", ops2, "Control Panel"));
 
-            // Pregunta 3: Clase Hija
-            bancoDeAcertijos.Add(new AcertijoLaboratorio("Recipiente de cristal para calentar líquidos", "Matraz", "Tiene cuello largo", new string[] { "Vaso", "Matraz", "Tubo", "Plato" }, "Vidrio Pyrex"));
+                // --- LEVEL 3: WAREHOUSE (Derived Class) ---
+                string[] ops3 = { "Glass", "Metal", "Wood", "Plastic" };
+                bancoDeAcertijos.Add(new AcertijoLaboratorio("Lights on! But the warehouse hallway is blocked by heavy pallets. What lightweight, organic material are the movable boxes made of?", "Wood", "An organic, fibrous material derived from trees.", ops3, "Pine Boxes"));
 
-            // Pregunta 4: Clase Base
-            bancoDeAcertijos.Add(new Acertijo("Símbolo químico del Oro", "Au", "Aurum", new string[] { "Ag", "Fe", "Au", "Cu" }));
+                // --- LEVEL 4: GAS LEAK (Derived Class) ---
+                string[] ops4 = { "Oxygen", "Nitrogen", "Chlorine", "Methane" };
+                bancoDeAcertijos.Add(new AcertijoLaboratorio("Path cleared! However, a broken cooling pipe is releasing a freezing white vapor. What cryogenic gas is it?", "Nitrogen", "Its chemical symbol is N, and it freezes matter instantly upon contact.", ops4, "Steel Pipe"));
 
-            // Pregunta 5: Clase Hija (Tu pregunta original)
-            string[] ops5 = { "botella", "tubo de ensayo", "vaso", "florero" };
-            bancoDeAcertijos.Add(new AcertijoLaboratorio("Soy de cristal y guardo muestras pequeñas", "tubo de ensayo", "Recipiente delgado", ops5, "Vidrio"));
+                // --- LEVEL 5: THE SPILL (Derived Class) ---
+                string[] ops5 = { "Oil", "Water", "Alcohol", "Vinegar" };
+                bancoDeAcertijos.Add(new AcertijoLaboratorio("You passed the vapor! But there is a slippery chemical spill on the analysis surface. Which universal neutral solvent should you use to clean the bench?", "Water", "A transparent liquid compound made of hydrogen and oxygen (H2O).", ops5, "Granite Bench"));
+
+                // --- LEVEL 6: COMPUTER (Derived Class) ---
+                string[] ops6 = { "0 and 1", "5 and 9", "A and B", "Yes and No" };
+                bancoDeAcertijos.Add(new AcertijoLaboratorio("Surface clean! You reach the main terminal to lock the monster out. Which two-digit numerical system does the PC's processor run on?", "0 and 1", "Machine language based on on and off states (Binary system).", ops6, "Silicon Circuits"));
+
+                // --- LEVEL 7: MICROSCOPIOS (Base Class) ---
+                string[] ops7 = { "Cell", "Stone", "Dirt", "Bottle" };
+                bancoDeAcertijos.Add(new Acertijo("System hacked! To get the override code, you analyze a biological sample under the microscope. What is the fundamental unit of life you are observing?", "Cell", "The basic structural and functional unit of all living organisms.", ops7));
+
+                // --- LEVEL 8: THERMOMETER (Derived Class) ---
+                string[] ops8 = { "Ruler", "Thermometer", "Scale", "Clock" };
+                bancoDeAcertijos.Add(new AcertijoLaboratorio("Analysis complete! The room temperature is rising as the monster burns the entrance. Which laboratory instrument measures environmental temperature?", "Thermometer", "A glass device that utilizes the thermal expansion of a mercury line.", ops8, "Thermal Glass"));
+
+                // --- LEVEL 9: SAFE (Base Class) ---
+                string[] ops9 = { "Fe", "Au", "Ag", "Cu" };
+                bancoDeAcertijos.Add(new Acertijo("Almost out! The security safe containing the master card requires the chemical symbol for the precious metal Gold. What is it?", "Au", "Derived from the Latin word 'Aurum', meaning shining dawn.", ops9));
+
+                // --- LEVEL 10: FINAL ESCAPE (Derived Class) ---
+                string[] ops10 = { "Closed", "Open", "Escape", "Mission" };
+                bancoDeAcertijos.Add(new AcertijoLaboratorio("You have the card! Run to the laboratory's armored exit. The final panel asks you to confirm the action on screen: What is your objective?", "Escape", "The act of breaking free from the facility before the specimen reaches you.", ops10, "Titanium Door"));
+            }
+            else
+            {
+                // --- NIVEL 1: ENTRADA (Clase Base) ---
+                string[] ops1 = { "3.14", "2.15", "1.16", "4.20" };
+                bancoDeAcertijos.Add(new Acertijo("¡El monstruo viene! Introduce el PIN de emergencia (las primeras cifras de PI) para entrar.", "3.14", "Es el número que usamos para calcular círculos", ops1));
+
+                // --- NIVEL 2: EL PANEL (Clase Hija) ---
+                string[] ops2 = { "Vidrio", "Cobre", "Plástico", "Papel" };
+                bancoDeAcertijos.Add(new AcertijoLaboratorio("¡Acceso correcto! El científico entró, pero se cortó la energía. Hay un cortocircuito. ¿Qué material conductor reconectas?", "Cobre", "Metal rojizo que transporta electricidad", ops2, "Panel de control"));
+
+                // --- NIVEL 3: ALMACÉN (Clase Hija) ---
+                string[] ops3 = { "Vidrio", "Metal", "Madera", "Plástico" };
+                bancoDeAcertijos.Add(new AcertijoLaboratorio("¡Luces encendidas! Pero el pasillo está bloqueado por cajas pesadas. ¿De qué material son las que puedes mover?", "Madera", "Material orgánico ligero", ops3, "Cajas de pino"));
+
+                // --- NIVEL 4: FUGA DE GAS (Clase Hija) ---
+                string[] ops4 = { "Oxigeno", "Nitrogeno", "Cloro", "Metano" };
+                bancoDeAcertijos.Add(new AcertijoLaboratorio("¡Camino despejado! Pero una tubería rota suelta un vapor blanco muy frío. ¿Qué gas es?", "Nitrogeno", "Su símbolo es N y congela al contacto", ops4, "Tubería de acero"));
+
+                // --- NIVEL 5: EL DERRAME (Clase Hija) ---
+                string[] ops5 = { "Aceite", "Agua", "Alcohol", "Vinagre" };
+                bancoDeAcertijos.Add(new AcertijoLaboratorio("¡Pasaste el vapor! Pero hay un derrame resbaloso en la mesa de química. ¿Qué solvente universal usas para limpiar?", "Agua", "Compuesto H2O", ops5, "Mesa de Granito"));
+
+                // --- NIVEL 6: COMPUTADORA (Clase Hija) ---
+                string[] ops6 = { "0 y 1", "5 y 9", "A y B", "Si y No" };
+                bancoDeAcertijos.Add(new AcertijoLaboratorio("¡Mesa limpia! Llegas a la terminal para bloquear al monstruo. ¿En qué sistema de dos dígitos trabaja la PC?", "0 y 1", "Es el lenguaje Binario", ops6, "Circuitos de Silicio"));
+
+                // --- NIVEL 7: MICROSCOPIO (Clase Base) ---
+                string[] ops7 = { "Célula", "Piedra", "Tierra", "Botella" };
+                bancoDeAcertijos.Add(new Acertijo("¡Sistema hackeado! Analizas una muestra en el microscopio. ¿Cómo se llama la unidad mínima de vida que ves?", "Célula", "Forma a todos los seres vivos", ops7));
+
+                // --- NIVEL 8: TERMÓMETRO (Clase Hija) ---
+                string[] ops8 = { "Regla", "Termómetro", "Balanza", "Reloj" };
+                bancoDeAcertijos.Add(new AcertijoLaboratorio("¡Análisis hecho! El calor aumenta, el monstruo quema la puerta. ¿Qué instrumento mide la temperatura ambiente?", "Termómetro", "Tiene una línea de mercurio", ops8, "Vidrio térmico"));
+
+                // --- NIVEL 9: CAJA FUERTE (Clase Base) ---
+                string[] ops9 = { "Fe", "Au", "Ag", "Cu" };
+                bancoDeAcertijos.Add(new Acertijo("¡Casi escapas! La caja fuerte con la llave maestra pide el símbolo químico del Oro. ¿Cuál es?", "Au", "Viene de Aurum", ops9));
+
+                // --- NIVEL 10: ESCAPE FINAL (Clase Hija) ---
+                string[] ops10 = { "Cerrado", "Abierto", "Escape", "Misión" };
+                bancoDeAcertijos.Add(new AcertijoLaboratorio("¡Tienes la llave! Corres a la salida blindada. El panel final pregunta: ¿Cuál es tu objetivo?", "Escape", "Lo que estás a punto de lograr", ops10, "Puerta de Titanio"));
+            }
         }
-
         private void ProcesarRespuesta(string respuesta)
         {
             if (nivel.VerificarRespuesta(respuesta))
@@ -453,9 +557,9 @@ namespace EscapeRoom
                 lblPuntuacion.Text = Textos.Get("puntuacionFmt", puntuacionTotal);
                 pictureBox3.Visible = false;
 
-                MessageBox.Show(Textos.Get("msgCorrecto"),
-                                Textos.Get("msgNivelOk"),
-                                MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("¡EXCELENTE! La respuesta era correcta. ¡Has avanzado!",
+                Textos.Get("msgNivelOk"),
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 indiceActual++;
                 MostrarSiguientePregunta();
@@ -479,6 +583,16 @@ namespace EscapeRoom
 
 
         private void lblTiempo_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblPuntuacion_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click_2(object sender, EventArgs e)
         {
 
         }

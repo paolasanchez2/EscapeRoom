@@ -13,8 +13,8 @@ namespace EscapeRoom
         string pregunta;
         string respuesta;
        public string pista;
-        string[] opciones; // Nuevo: para los 4 botones
-        public string[] Opciones { get; set; } // Nuevo: para los 4 botones
+        string[] opciones; 
+        public string[] Opciones { get; set; } // son los 4 botones
         public string Pregunta{get; set; }
        string Respuesta { get; set; }
       public string Pista { get; set; }

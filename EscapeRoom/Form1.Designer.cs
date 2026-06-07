@@ -51,96 +51,122 @@
             // 
             // btnIniciar
             // 
-            this.btnIniciar.Location = new System.Drawing.Point(352, 270);
+            this.btnIniciar.BackColor = System.Drawing.Color.BlueViolet;
+            this.btnIniciar.FlatAppearance.BorderSize = 0;
+            this.btnIniciar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnIniciar.Font = new System.Drawing.Font("Segoe UI", 11F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnIniciar.Location = new System.Drawing.Point(396, 338);
             this.btnIniciar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnIniciar.Name = "btnIniciar";
-            this.btnIniciar.Size = new System.Drawing.Size(187, 39);
+            this.btnIniciar.Size = new System.Drawing.Size(210, 49);
             this.btnIniciar.TabIndex = 0;
             this.btnIniciar.Text = "Iniciar";
-            this.btnIniciar.UseVisualStyleBackColor = true;
+            this.btnIniciar.UseVisualStyleBackColor = false;
             this.btnIniciar.Click += new System.EventHandler(this.btnIniciar_Click);
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(167, 128);
+            this.pictureBox1.Location = new System.Drawing.Point(178, 200);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(160, 154);
+            this.pictureBox1.Size = new System.Drawing.Size(177, 271);
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // pictureBox2
             // 
-            this.pictureBox2.Location = new System.Drawing.Point(332, 57);
+            this.pictureBox2.BackColor = System.Drawing.SystemColors.Control;
+            this.pictureBox2.Location = new System.Drawing.Point(361, 79);
             this.pictureBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(323, 314);
+            this.pictureBox2.Size = new System.Drawing.Size(316, 392);
             this.pictureBox2.TabIndex = 3;
             this.pictureBox2.TabStop = false;
             this.pictureBox2.Click += new System.EventHandler(this.pictureBox2_Click);
             // 
             // pictureBox3
             // 
-            this.pictureBox3.Location = new System.Drawing.Point(696, 243);
+            this.pictureBox3.Location = new System.Drawing.Point(801, 253);
             this.pictureBox3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(156, 146);
+            this.pictureBox3.Size = new System.Drawing.Size(180, 235);
             this.pictureBox3.TabIndex = 4;
             this.pictureBox3.TabStop = false;
             this.pictureBox3.Click += new System.EventHandler(this.pictureBox3_Click);
             // 
             // lblPregunta
             // 
-            this.lblPregunta.Location = new System.Drawing.Point(18, 7);
+            this.lblPregunta.BackColor = System.Drawing.Color.BlueViolet;
+            this.lblPregunta.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lblPregunta.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPregunta.ForeColor = System.Drawing.Color.White;
+            this.lblPregunta.Location = new System.Drawing.Point(7, 9);
             this.lblPregunta.Name = "lblPregunta";
-            this.lblPregunta.Size = new System.Drawing.Size(468, 47);
+            this.lblPregunta.Size = new System.Drawing.Size(644, 54);
             this.lblPregunta.TabIndex = 5;
             this.lblPregunta.Text = "pregunta";
+            this.lblPregunta.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             this.lblPregunta.Click += new System.EventHandler(this.label1_Click_1);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(37, 394);
+            this.button1.BackColor = System.Drawing.Color.BlueViolet;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(12, 115);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(155, 38);
+            this.button1.Size = new System.Drawing.Size(147, 48);
             this.button1.TabIndex = 6;
             this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(229, 394);
+            this.button2.BackColor = System.Drawing.Color.BlueViolet;
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button2.Location = new System.Drawing.Point(12, 188);
             this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(164, 38);
+            this.button2.Size = new System.Drawing.Size(147, 48);
             this.button2.TabIndex = 7;
             this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
+            this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(439, 394);
+            this.button3.BackColor = System.Drawing.Color.BlueViolet;
+            this.button3.FlatAppearance.BorderSize = 0;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button3.Location = new System.Drawing.Point(12, 269);
             this.button3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(163, 38);
+            this.button3.Size = new System.Drawing.Size(147, 48);
             this.button3.TabIndex = 8;
             this.button3.Text = "button3";
-            this.button3.UseVisualStyleBackColor = true;
+            this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(642, 394);
+            this.button4.BackColor = System.Drawing.Color.BlueViolet;
+            this.button4.FlatAppearance.BorderSize = 0;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.Location = new System.Drawing.Point(12, 341);
             this.button4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(169, 38);
+            this.button4.Size = new System.Drawing.Size(147, 48);
             this.button4.TabIndex = 9;
             this.button4.Text = "button4";
-            this.button4.UseVisualStyleBackColor = true;
+            this.button4.UseVisualStyleBackColor = false;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // timer1
@@ -150,51 +176,67 @@
             // 
             // lblTiempo
             // 
-            this.lblTiempo.Location = new System.Drawing.Point(15, 84);
+            this.lblTiempo.BackColor = System.Drawing.Color.DarkOrchid;
+            this.lblTiempo.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTiempo.Location = new System.Drawing.Point(423, 489);
             this.lblTiempo.Name = "lblTiempo";
-            this.lblTiempo.Size = new System.Drawing.Size(81, 35);
+            this.lblTiempo.Size = new System.Drawing.Size(150, 37);
             this.lblTiempo.TabIndex = 10;
             this.lblTiempo.Text = "label1";
+            this.lblTiempo.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.lblTiempo.Click += new System.EventHandler(this.lblTiempo_Click);
             // 
             // btnPista
             // 
-            this.btnPista.Location = new System.Drawing.Point(11, 140);
+            this.btnPista.BackColor = System.Drawing.Color.DarkOrchid;
+            this.btnPista.FlatAppearance.BorderSize = 0;
+            this.btnPista.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPista.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnPista.ForeColor = System.Drawing.Color.Transparent;
+            this.btnPista.Location = new System.Drawing.Point(650, 489);
             this.btnPista.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnPista.Name = "btnPista";
-            this.btnPista.Size = new System.Drawing.Size(85, 37);
+            this.btnPista.Size = new System.Drawing.Size(150, 37);
             this.btnPista.TabIndex = 11;
             this.btnPista.Text = "Pista";
-            this.btnPista.UseVisualStyleBackColor = true;
+            this.btnPista.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.btnPista.UseVisualStyleBackColor = false;
             this.btnPista.Click += new System.EventHandler(this.btnPista_Click);
             // 
             // lblPuntuacion
             // 
-            this.lblPuntuacion.Location = new System.Drawing.Point(11, 202);
+            this.lblPuntuacion.BackColor = System.Drawing.Color.DarkOrchid;
+            this.lblPuntuacion.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.lblPuntuacion.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPuntuacion.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.lblPuntuacion.Location = new System.Drawing.Point(193, 489);
             this.lblPuntuacion.Name = "lblPuntuacion";
-            this.lblPuntuacion.Size = new System.Drawing.Size(85, 34);
+            this.lblPuntuacion.Size = new System.Drawing.Size(150, 37);
             this.lblPuntuacion.TabIndex = 12;
             this.lblPuntuacion.Text = "Puntuaje";
+            this.lblPuntuacion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblPuntuacion.Click += new System.EventHandler(this.lblPuntuacion_Click);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label1.Location = new System.Drawing.Point(693, 220);
+            this.label1.Location = new System.Drawing.Point(817, 129);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(145, 160);
+            this.label1.Size = new System.Drawing.Size(149, 210);
             this.label1.TabIndex = 13;
             this.label1.Text = "Controles\r\nTeclas\r\nP PISTA\r\nC CONFIGURACION\r\nL CARGAR\r\nS GUARDAR\r\n1 BOTON1\r\n2 BOT" +
     "ON2\r\n3 BOTON3\r\n4 BOTON4";
+            this.label1.Click += new System.EventHandler(this.label1_Click_2);
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
-            this.ClientSize = new System.Drawing.Size(862, 469);
+            this.ClientSize = new System.Drawing.Size(970, 586);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblPuntuacion);
             this.Controls.Add(this.btnPista);
@@ -208,6 +250,7 @@
             this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnIniciar);
+            this.ForeColor = System.Drawing.Color.Cornsilk;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.Text = "Form1";

@@ -6,15 +6,15 @@ namespace EscapeRoom
 {
     public class Ajustes
     {
-        // ── Propiedades que se guardan en JSON ──────────────────────────────
+       //guardan en JSON 
         public string Idioma { get; set; } = "es"; // "es" o "en"
 
-        // ── Ruta del archivo de configuración ──────────────────────────────
+        // La Ruta 
         private static readonly string RutaConfig = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
             "EscapeRoom", "ajustes.json");
 
-        // ── Guardar en JSON ─────────────────────────────────────────────────
+        // Se Guarda en JSON
         public void Guardar()
         {
             Directory.CreateDirectory(Path.GetDirectoryName(RutaConfig));
@@ -22,7 +22,7 @@ namespace EscapeRoom
             File.WriteAllText(RutaConfig, json);
         }
 
-        // ── Cargar desde JSON (devuelve instancia por defecto si no existe) ─
+        // se Carga desde JSON
         public static Ajustes Cargar()
         {
             if (!File.Exists(RutaConfig))
